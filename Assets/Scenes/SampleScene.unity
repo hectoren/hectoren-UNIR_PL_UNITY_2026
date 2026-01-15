@@ -1383,7 +1383,7 @@ GameObject:
   - component: {fileID: 291653294}
   - component: {fileID: 291653293}
   m_Layer: 0
-  m_Name: Farole (8)
+  m_Name: Street Lamp (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1551,7 +1551,7 @@ GameObject:
   - component: {fileID: 447258724}
   - component: {fileID: 447258723}
   m_Layer: 0
-  m_Name: Farole (1)
+  m_Name: Street Lamp (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61753,7 +61753,7 @@ GameObject:
   - component: {fileID: 1217095082}
   - component: {fileID: 1217095081}
   m_Layer: 0
-  m_Name: Farole (10)
+  m_Name: Street Lamp (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61837,7 +61837,7 @@ GameObject:
   - component: {fileID: 1237469264}
   - component: {fileID: 1237469263}
   m_Layer: 0
-  m_Name: Farole (11)
+  m_Name: Street Lamp (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61921,7 +61921,7 @@ GameObject:
   - component: {fileID: 1245314296}
   - component: {fileID: 1245314295}
   m_Layer: 0
-  m_Name: Farole (7)
+  m_Name: Street Lamp (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62087,7 +62087,7 @@ GameObject:
   - component: {fileID: 1395341627}
   - component: {fileID: 1395341626}
   m_Layer: 0
-  m_Name: Farole (3)
+  m_Name: Street Lamp (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62171,7 +62171,7 @@ GameObject:
   - component: {fileID: 1400630255}
   - component: {fileID: 1400630254}
   m_Layer: 0
-  m_Name: Farole (9)
+  m_Name: Street Lamp (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62255,7 +62255,7 @@ GameObject:
   - component: {fileID: 1436867173}
   - component: {fileID: 1436867172}
   m_Layer: 0
-  m_Name: Farole (5)
+  m_Name: Street Lamp (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62339,7 +62339,7 @@ GameObject:
   - component: {fileID: 1458614623}
   - component: {fileID: 1458614622}
   m_Layer: 0
-  m_Name: Farole (4)
+  m_Name: Street Lamp (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62423,7 +62423,7 @@ GameObject:
   - component: {fileID: 1502373438}
   - component: {fileID: 1502373437}
   m_Layer: 0
-  m_Name: Farole (6)
+  m_Name: Street Lamp (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62507,7 +62507,7 @@ GameObject:
   - component: {fileID: 1571984284}
   - component: {fileID: 1571984283}
   m_Layer: 0
-  m_Name: Farole
+  m_Name: Street Lamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62927,7 +62927,7 @@ GameObject:
   - component: {fileID: 1764497640}
   - component: {fileID: 1764497639}
   m_Layer: 0
-  m_Name: Farole (2)
+  m_Name: Street Lamp (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
