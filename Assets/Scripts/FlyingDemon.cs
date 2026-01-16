@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class SkeWarrior : MonoBehaviour
+public class FlyingDemon : MonoBehaviour
 {
     [SerializeField] private Transform[] wayPoints;
     [SerializeField] private float speedPatrol;
@@ -19,7 +18,7 @@ public class SkeWarrior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    
+
     }
 
     IEnumerator Patrol()
