@@ -6,6 +6,7 @@ public class FlyingDemon : MonoBehaviour
 {
     [SerializeField] private Transform[] wayPoints;
     [SerializeField] private float speedPatrol;
+    [SerializeField] private float attackDamage;
     private Vector3 currentDestination;
     private int currentIndex = 0;
     // Start is called before the first frame update
@@ -65,6 +66,8 @@ public class FlyingDemon : MonoBehaviour
         else if (other.gameObject.CompareTag("PlayerHitBox"))
         {
             Debug.Log("Player Atravesado!!!");
+            HealthSystem healthSystem = other.gameObject.GetComponent<HealthSystem>();
+            healthSystem.ReceivedDamage(attackDamage);
         }
     }
 }

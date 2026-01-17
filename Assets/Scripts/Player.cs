@@ -9,6 +9,12 @@ public class Player : MonoBehaviour
     private Animator anim;
     [SerializeField] private float movementVelocity;
     [SerializeField] private float jumpForce;
+
+    [Header("Combat System")]
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private float attackRadius;
+    [SerializeField] private float attackDamage;
+    [SerializeField] private LayerMask damageableLayer;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,14 +29,24 @@ public class Player : MonoBehaviour
 
         Jump();
 
-        Attack_1();
+        LaunchAttack_1();
     }
 
-    private void Attack_1()
+    private void LaunchAttack_1()
     {
         if (Input.GetMouseButtonDown(0))
         {
             anim.SetTrigger("attack_1");
+        }
+    }
+
+    private void Attack()
+    {
+        Collider2D[] touchedColliders = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, damageableLayer);
+        foreach (Collider2D item in touchedColliders)
+        {
+            HealthSystem healthSystem = item.gameObject.GetComponent<HealthSystem>();
+            healthSystem.ReceivedDamage(attackDamage);
         }
     }
 
@@ -64,5 +80,10 @@ public class Player : MonoBehaviour
         {
             anim.SetBool("running", false);
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(attackPoint.position, attackRadius);
     }
 }
