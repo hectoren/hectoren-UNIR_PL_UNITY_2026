@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
 
     [Header("Movement System")]
     [SerializeField] private Transform feet;
+    [SerializeField] private float minX = -55f;
     [SerializeField] private float movementVelocity = 5f;
     [SerializeField] private float jumpForce = 8f;
     [SerializeField] private float distanceDetectionGround = 0.2f;
@@ -31,7 +32,6 @@ public class Player : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        // Leemos el Vector2 del input (teclado o control)
         Vector2 input = context.ReadValue<Vector2>();
         inputH = input.x;
     }
@@ -58,6 +58,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+        Vector3 pos = transform.position;
         rb.velocity = new Vector2(inputH * movementVelocity, rb.velocity.y);
 
         anim.SetBool("running", inputH != 0);
@@ -66,6 +67,11 @@ public class Player : MonoBehaviour
             transform.eulerAngles = Vector3.zero;
         else if (inputH < 0)
             transform.eulerAngles = new Vector3(0, 180, 0);
+
+        if (pos.x < minX)
+            pos.x = minX;
+
+        transform.position = pos;
     }
 
     private bool OnGround()
@@ -78,7 +84,6 @@ public class Player : MonoBehaviour
         );
     }
 
-    // Este método suele llamarse desde un Animation Event
     private void Attack()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(
