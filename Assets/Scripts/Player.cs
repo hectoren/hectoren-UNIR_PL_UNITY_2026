@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 
     private float inputH;
 
-    private HealthSystem health;
+    private HealthSystem healthSystem;
     private bool dead;
     private CinemachineVirtualCamera virtualCamera;
 
@@ -31,11 +31,11 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        health = GetComponent<HealthSystem>();
+        healthSystem = GetComponent<HealthSystem>();
         virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
 
-        if (health != null)
-            health.OnDeath += OnDeath;
+        if (healthSystem != null)
+            healthSystem.OnDeath += OnDeath;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -117,7 +117,6 @@ public class Player : MonoBehaviour
     private void OnDeath()
     {
         dead = true;
-
         rb.velocity = Vector2.zero;
         rb.simulated = false;
         inputH = 0;

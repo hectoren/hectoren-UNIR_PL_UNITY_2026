@@ -8,12 +8,17 @@ public class Wizard : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float attackTime;
     [SerializeField] private float attackDamage;
+    private HealthSystem healthSystem;
     private Animator anim;
     // Start is called before the first frame update
     void Start()
     {
+        healthSystem = GetComponent<HealthSystem>();
         anim = GetComponent<Animator>();
         StartCoroutine(AttackRoutine());
+
+        if (healthSystem != null)
+            healthSystem.OnDeath += OnDeath;
     }
 
     // Update is called once per frame
@@ -34,5 +39,10 @@ public class Wizard : MonoBehaviour
     private void ThrowBall()
     {
         Instantiate(ball, spawnPoint.position, transform.rotation);
+    }
+
+    private void OnDeath()
+    {
+        Destroy(gameObject);
     }
 }

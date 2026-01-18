@@ -7,13 +7,18 @@ public class FlyingDemon : MonoBehaviour
     [SerializeField] private Transform[] wayPoints;
     [SerializeField] private float speedPatrol;
     [SerializeField] private float attackDamage;
+    private HealthSystem healthSystem;
     private Vector3 currentDestination;
     private int currentIndex = 0;
     // Start is called before the first frame update
     void Start()
     {
+        healthSystem = GetComponent<HealthSystem>();
         currentDestination = wayPoints[currentIndex].position;
         StartCoroutine(Patrol());
+
+        if (healthSystem != null)
+            healthSystem.OnDeath += OnDeath;
     }
 
     // Update is called once per frame
@@ -69,5 +74,10 @@ public class FlyingDemon : MonoBehaviour
             HealthSystem healthSystem = other.gameObject.GetComponent<HealthSystem>();
             healthSystem.ReceivedDamage(attackDamage);
         }
+    }
+
+    private void OnDeath()
+    {
+        Destroy(gameObject);
     }
 }

@@ -10,11 +10,16 @@ public class SkeWarrior : MonoBehaviour
     [SerializeField] private float attackDamage;
     private Vector3 currentDestination;
     private int currentIndex = 0;
+    private HealthSystem healthSystem;
     // Start is called before the first frame update
     void Start()
     {
+        healthSystem = GetComponent<HealthSystem>();
         currentDestination = wayPoints[currentIndex].position;
         StartCoroutine(Patrol());
+
+        if (healthSystem != null ) 
+            healthSystem.OnDeath += OnDeath;
     }
 
     // Update is called once per frame
@@ -70,5 +75,10 @@ public class SkeWarrior : MonoBehaviour
             HealthSystem healthSystem = other.gameObject.GetComponent<HealthSystem>();
             healthSystem.ReceivedDamage(attackDamage);
         }
+    }
+
+    private void OnDeath()
+    {
+        Destroy(gameObject);
     }
 }
