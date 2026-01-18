@@ -1,99 +1,103 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
-    private float inputH;
     private Animator anim;
+
+    private float inputH;
 
     [Header("Movement System")]
     [SerializeField] private Transform feet;
-    [SerializeField] private float movementVelocity;
-    [SerializeField] private float jumpForce;
-    [SerializeField] private float distanceDetectionGround;
+    [SerializeField] private float movementVelocity = 5f;
+    [SerializeField] private float jumpForce = 8f;
+    [SerializeField] private float distanceDetectionGround = 0.2f;
     [SerializeField] private LayerMask jumpedLayer;
 
     [Header("Combat System")]
     [SerializeField] private Transform attackPoint;
-    [SerializeField] private float attackRadius;
-    [SerializeField] private float attackDamage;
+    [SerializeField] private float attackRadius = 0.5f;
+    [SerializeField] private float attackDamage = 10f;
     [SerializeField] private LayerMask damageableLayer;
-    // Start is called before the first frame update
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
+    /* ================= INPUT EVENTS ================= */
+
+    public void OnMove(InputAction.CallbackContext context)
     {
-        Movement();
-
-        Jump();
-
-        LaunchAttack_1();
+        // Leemos el Vector2 del input (teclado o control)
+        Vector2 input = context.ReadValue<Vector2>();
+        inputH = input.x;
     }
 
-    private void LaunchAttack_1()
+    public void OnJump(InputAction.CallbackContext context)
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            anim.SetTrigger("attack_1");
-        }
-    }
+        if (!context.performed) return;
 
-    private void Attack()
-    {
-        Collider2D[] touchedColliders = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, damageableLayer);
-        foreach (Collider2D item in touchedColliders)
-        {
-            HealthSystem healthSystem = item.gameObject.GetComponent<HealthSystem>();
-            healthSystem.ReceivedDamage(attackDamage);
-        }
-    }
-
-    private void Jump()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && OnGround())
+        if (OnGround())
         {
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             anim.SetTrigger("jump");
         }
     }
 
-    private bool OnGround()
+    public void OnAttack(InputAction.CallbackContext context)
     {
-        return Physics2D.Raycast(feet.position, Vector3.down, distanceDetectionGround, jumpedLayer);        
+        if (!context.performed) return;
+
+        anim.SetTrigger("attack_1");
     }
 
-    private void Movement()
+    /* ================= MOVEMENT ================= */
+
+    void FixedUpdate()
     {
-        inputH = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(inputH * movementVelocity, rb.velocity.y);
 
-        if (inputH != 0)
+        anim.SetBool("running", inputH != 0);
+
+        if (inputH > 0)
+            transform.eulerAngles = Vector3.zero;
+        else if (inputH < 0)
+            transform.eulerAngles = new Vector3(0, 180, 0);
+    }
+
+    private bool OnGround()
+    {
+        return Physics2D.Raycast(
+            feet.position,
+            Vector2.down,
+            distanceDetectionGround,
+            jumpedLayer
+        );
+    }
+
+    // Este método suele llamarse desde un Animation Event
+    private void Attack()
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(
+            attackPoint.position,
+            attackRadius,
+            damageableLayer
+        );
+
+        foreach (Collider2D hit in hits)
         {
-            anim.SetBool("running", true);
-            if (inputH > 0)
-            {
-                transform.eulerAngles = Vector3.zero;
-            }
-            else
-            {
-                transform.eulerAngles = new Vector3(0, 180, 0);
-            }
-        }
-        else
-        {
-            anim.SetBool("running", false);
+            HealthSystem hs = hit.GetComponent<HealthSystem>();
+            if (hs != null)
+                hs.ReceivedDamage(attackDamage);
         }
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(attackPoint.position, attackRadius);
+        if (attackPoint != null)
+            Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
     }
 }

@@ -58,7 +58,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   speedPatrol: 5
-  attackDamage: 0
+  attackDamage: 20
 --- !u!114 &7406915864503027269
 MonoBehaviour:
   m_ObjectHideFlags: 0
