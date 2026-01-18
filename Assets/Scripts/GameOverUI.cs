@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class GameOverUI : MonoBehaviour
 {
     [SerializeField] private GameObject gameOverText;
+    [SerializeField] private Volume gameOverVolume;
 
     private bool gameOver;
 
@@ -34,6 +36,10 @@ public class GameOverUI : MonoBehaviour
     {
         gameOver = true;
         gameOverText.SetActive(true);
+
+        if (gameOverVolume != null)
+            gameOverVolume.weight = 1f;
+
         Time.timeScale = 0f;
     }
 
