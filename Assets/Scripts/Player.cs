@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 public class Player : MonoBehaviour
 {
@@ -8,11 +9,15 @@ public class Player : MonoBehaviour
 
     private float inputH;
 
+    private HealthSystem health;
+    private bool dead;
+    private CinemachineVirtualCamera virtualCamera;
+
     [Header("Movement System")]
     [SerializeField] private Transform feet;
     [SerializeField] private float minX = -55f;
     [SerializeField] private float movementVelocity = 5f;
-    [SerializeField] private float jumpForce = 8f;
+    [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float distanceDetectionGround = 0.2f;
     [SerializeField] private LayerMask jumpedLayer;
 
@@ -26,9 +31,12 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-    }
+        health = GetComponent<HealthSystem>();
+        virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
 
-    /* ================= INPUT EVENTS ================= */
+        if (health != null)
+            health.OnDeath += OnDeath;
+    }
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -54,12 +62,12 @@ public class Player : MonoBehaviour
         anim.SetTrigger("attack_1");
     }
 
-    /* ================= MOVEMENT ================= */
-
     void FixedUpdate()
     {
         Vector3 pos = transform.position;
         rb.velocity = new Vector2(inputH * movementVelocity, rb.velocity.y);
+
+        if (dead) return;
 
         anim.SetBool("running", inputH != 0);
 
@@ -104,5 +112,17 @@ public class Player : MonoBehaviour
     {
         if (attackPoint != null)
             Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
+    }
+
+    private void OnDeath()
+    {
+        dead = true;
+
+        rb.velocity = Vector2.zero;
+        rb.simulated = false;
+        inputH = 0;
+
+        if (virtualCamera != null)
+            virtualCamera.Follow = null;
     }
 }
