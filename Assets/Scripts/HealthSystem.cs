@@ -8,6 +8,7 @@ public class HealthSystem : MonoBehaviour
     [SerializeField] private float health;
     public bool isDead = false;
 
+    public event Action OnDamaged;
     public event Action OnDeath;
     
     public void ReceivedDamage(float damageReceived)
@@ -15,9 +16,12 @@ public class HealthSystem : MonoBehaviour
         if (isDead) return;
         
         health -= damageReceived;
-        if (health <= 0f)
+        if (health > 0f)
         {
-            //Destroy(this.gameObject);
+            OnDamaged?.Invoke();
+        }
+        else
+        {
             Kill();
         }
     }
@@ -30,6 +34,5 @@ public class HealthSystem : MonoBehaviour
         isDead = true;
 
         OnDeath?.Invoke();
-        Destroy(this.gameObject);
     }
 }

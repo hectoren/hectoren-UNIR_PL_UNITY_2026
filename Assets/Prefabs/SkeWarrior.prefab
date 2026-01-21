@@ -82,6 +82,7 @@ GameObject:
   - component: {fileID: 6106789180167204244}
   - component: {fileID: 1822454810523756472}
   - component: {fileID: 4147038195320511468}
+  - component: {fileID: 6174736446468515248}
   m_Layer: 6
   m_Name: SkeWarrior
   m_TagString: Untagged
@@ -135,6 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 80
+  isDead: 0
 --- !u!212 &5252722854734571400
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -270,3 +272,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &6174736446468515248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562870142741707497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc00d2ae9b9b126409ca7ff3a2433964, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hurtStunTime: 0.3

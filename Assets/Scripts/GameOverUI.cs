@@ -2,6 +2,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public class GameOverUI : MonoBehaviour
 {
@@ -22,8 +23,6 @@ public class GameOverUI : MonoBehaviour
         if (player != null)
         {
             HealthSystem health = player.GetComponent<HealthSystem>();
-            if (health != null)
-                health.OnDeath += ShowGameOver;
         }
     }
 
@@ -54,10 +53,22 @@ public class GameOverUI : MonoBehaviour
 
     private void QuitGame()
     {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
     }
+
+    public void ShowGameOverFromPlayer()
+    {
+        if (IsGameOver) return;
+
+        IsGameOver = true;
+
+        gameOverText.SetActive(true);
+
+        if (gameOverVolume != null)
+            gameOverVolume.weight = 1f;
+
+        Time.timeScale = 0f;
+    }
+
 }

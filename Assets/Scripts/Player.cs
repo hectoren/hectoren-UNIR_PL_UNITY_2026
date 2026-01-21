@@ -35,7 +35,10 @@ public class Player : MonoBehaviour
         virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
 
         if (healthSystem != null)
+        {
+            healthSystem.OnDamaged += OnHurt;
             healthSystem.OnDeath += OnDeath;
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -65,9 +68,14 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 pos = transform.position;
-        rb.velocity = new Vector2(inputH * movementVelocity, rb.velocity.y);
 
-        if (dead) return;
+        if (dead)
+        {
+        rb.velocity = Vector2.zero;
+            return;
+        }
+
+        rb.velocity = new Vector2(inputH * movementVelocity, rb.velocity.y);
 
         anim.SetBool("running", inputH != 0);
 
@@ -117,11 +125,33 @@ public class Player : MonoBehaviour
     private void OnDeath()
     {
         dead = true;
+
         rb.velocity = Vector2.zero;
-        rb.simulated = false;
         inputH = 0;
+
+        anim.enabled = false;
 
         if (virtualCamera != null)
             virtualCamera.Follow = null;
+
+        GameOverUI gameOver = FindObjectOfType<GameOverUI>();
+        if (gameOver != null)
+            gameOver.ShowGameOverFromPlayer();
     }
+
+    private void OnHurt()
+    {
+        if (dead) return;
+        anim.SetTrigger("hurt");
+    }
+
+    public void OnDeathAnimationFinished()
+    {
+        rb.simulated = false;
+
+        GameOverUI gameOver = FindObjectOfType<GameOverUI>();
+        if (gameOver != null)
+            gameOver.ShowGameOverFromPlayer();
+    }
+
 }
