@@ -138963,6 +138963,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4937836420237683652, guid: da7609720735ab141820e865beebb4f8, type: 3}
+      propertyPath: chaseSpeedMultiplier
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4937836420237683652, guid: da7609720735ab141820e865beebb4f8, type: 3}
       propertyPath: wayPoints.Array.data[0]
       value: 
       objectReference: {fileID: 1304093367}

@@ -8,7 +8,7 @@ public class SkeWarrior : EnemyBase
     [SerializeField] private float speedPatrol = 2f;
 
     [Header("Chase")]
-    [SerializeField] private float chaseSpeedMultiplier = 4f;
+    [SerializeField] private float chaseSpeedMultiplier = 2.5f;
 
     [Header("Combat")]
     [SerializeField] private float attackDamage = 10f;
