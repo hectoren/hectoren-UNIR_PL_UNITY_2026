@@ -1,83 +1,162 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class FlyingDemon : MonoBehaviour
+[RequireComponent(typeof(Rigidbody2D))]
+public class FlyingDemon : EnemyBase
 {
+    [Header("Patrol")]
     [SerializeField] private Transform[] wayPoints;
-    [SerializeField] private float speedPatrol;
-    [SerializeField] private float attackDamage;
-    private HealthSystem healthSystem;
-    private Vector3 currentDestination;
-    private int currentIndex = 0;
-    // Start is called before the first frame update
-    void Start()
-    {
-        healthSystem = GetComponent<HealthSystem>();
-        currentDestination = wayPoints[currentIndex].position;
-        StartCoroutine(Patrol());
+    [SerializeField] private float patrolSpeed = 3f;
+    [SerializeField] private float waypointReachDistance = 0.1f;
 
-        if (healthSystem != null)
-            healthSystem.OnDeath += OnDeath;
+    [Header("Chase")]
+    [SerializeField] private float chaseSpeed = 4f;
+
+    [Header("Attack")]
+    [SerializeField] private float attackDistance = 1.2f;
+    [SerializeField] private float attackCooldown = 0.8f;
+
+    private Rigidbody2D rb;
+    private Transform player;
+
+    private Vector2 currentDestination;
+    private int currentIndex;
+
+    private bool playerDetected;
+    private bool isAttacking;
+    private float nextAttackTime;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
+        GameObject playerHitBox = GameObject.FindGameObjectWithTag("PlayerHitBox");
+        if (playerHitBox != null)
+            player = playerHitBox.transform;
 
-    }
-
-    IEnumerator Patrol()
-    {
-        while (true)
+        if (wayPoints != null && wayPoints.Length > 0)
         {
-            while (transform.position != currentDestination)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, currentDestination, speedPatrol * Time.deltaTime);
-                yield return null;
-            }
-            DefineNewDestination();
+            currentIndex = 0;
+            currentDestination = wayPoints[currentIndex].position;
+            FocusTarget(currentDestination);
         }
+    }
+
+    private void FixedUpdate()
+    {
+        if (isDead) return;
+
+        if (playerDetected && player != null)
+            FocusTarget(player.position);
+
+        if (isAttacking)
+        {
+            if (Time.time >= nextAttackTime)
+                isAttacking = false;
+
+            rb.velocity = Vector2.zero;
+            return;
+        }
+
+
+        if (playerDetected && player != null)
+            HandleChaseAndAttack();
+        else
+            HandlePatrol();
+    }
+
+    private void HandlePatrol()
+    {
+        anim.SetBool("isFlying", true);
+
+        if (Vector2.Distance(rb.position, currentDestination) <= waypointReachDistance)
+            DefineNewDestination();
+
+        MoveTo(currentDestination, patrolSpeed);
     }
 
     private void DefineNewDestination()
     {
         currentIndex++;
         if (currentIndex >= wayPoints.Length)
-        {
             currentIndex = 0;
-        }
+
         currentDestination = wayPoints[currentIndex].position;
-        FocusDestination();
+        FocusTarget(currentDestination);
     }
 
-    private void FocusDestination()
+    private void HandleChaseAndAttack()
     {
-        if (currentDestination.x > transform.position.x)
+        float dist = Vector2.Distance(rb.position, player.position);
+
+        if (dist <= attackDistance && Time.time >= nextAttackTime)
         {
-            transform.localScale = Vector3.one;
+            StartAttack();
+            return;
         }
-        else
-        {
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
+
+        anim.SetBool("isFlying", true);
+        MoveTo(player.position, chaseSpeed);
     }
+
+    private void StartAttack()
+    {
+        isAttacking = true;
+        rb.velocity = Vector2.zero;
+
+        if (player != null)
+            FocusTarget(player.position);
+
+        anim.SetTrigger("attack");
+        nextAttackTime = Time.time + attackCooldown;
+    }
+
+    public void EndAttack()
+    {
+        isAttacking = false;
+    }
+
+    private void MoveTo(Vector2 target, float speed)
+    {
+        rb.MovePosition(
+            Vector2.MoveTowards(rb.position, target, speed * Time.fixedDeltaTime)
+        );
+    }
+
+    private void FocusTarget(Vector2 target)
+    {
+        transform.localScale = (target.x >= transform.position.x)
+            ? new Vector3(-1f, 1f, 1f)
+            : Vector3.one;
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("DetectionPlayer"))
+        if (other.CompareTag("PlayerHitBox"))
         {
-            Debug.Log("Player Detectado!!!");
-        }
-        else if (other.gameObject.CompareTag("PlayerHitBox"))
-        {
-            Debug.Log("Player Atravesado!!!");
-            HealthSystem healthSystem = other.gameObject.GetComponent<HealthSystem>();
-            healthSystem.ReceivedDamage(attackDamage);
+            playerDetected = true;
+
+            if (player != null)
+                FocusTarget(player.position);
         }
     }
 
-    private void OnDeath()
+    private void OnTriggerExit2D(Collider2D other)
     {
-        Destroy(gameObject);
+        if (other.CompareTag("PlayerHitBox"))
+        {
+            playerDetected = false;
+        }
     }
+
+    protected override void HandleDeath()
+    {
+        base.HandleDeath();
+        rb.velocity = Vector2.zero;
+        Destroy(gameObject, 1.2f);
+    }
+
 }

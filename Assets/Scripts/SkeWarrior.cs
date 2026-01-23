@@ -275,9 +275,9 @@ public class SkeWarrior : EnemyBase
             Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
     }
 
-    public void OnAttackFinished()//
-    {//
-        isAttacking = false;//
+    public void OnAttackFinished()
+    {
+        isAttacking = false;
     }
 
 }

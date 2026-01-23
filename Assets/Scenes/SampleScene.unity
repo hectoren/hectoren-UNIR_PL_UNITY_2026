@@ -132269,22 +132269,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SkeWarrior
       objectReference: {fileID: 0}
-    - target: {fileID: 2501746787655386274, guid: da7609720735ab141820e865beebb4f8, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.22
-      objectReference: {fileID: 0}
-    - target: {fileID: 2501746787655386274, guid: da7609720735ab141820e865beebb4f8, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4937836420237683652, guid: da7609720735ab141820e865beebb4f8, type: 3}
-      propertyPath: attackPoint
-      value: 
-      objectReference: {fileID: 906574204}
-    - target: {fileID: 4937836420237683652, guid: da7609720735ab141820e865beebb4f8, type: 3}
-      propertyPath: attackDamage
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4937836420237683652, guid: da7609720735ab141820e865beebb4f8, type: 3}
       propertyPath: wayPoints.Array.data[0]
       value: 
@@ -132338,11 +132322,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da7609720735ab141820e865beebb4f8, type: 3}
---- !u!4 &906574204 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2501746787655386274, guid: da7609720735ab141820e865beebb4f8, type: 3}
-  m_PrefabInstance: {fileID: 906574203}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &919062115
 GameObject:
   m_ObjectHideFlags: 0
@@ -139078,6 +139057,14 @@ PrefabInstance:
       propertyPath: wayPoints.Array.data[5]
       value: 
       objectReference: {fileID: 1412965370}
+    - target: {fileID: 3350677750614443041, guid: 8512db1400456464db9454c8b41b7055, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6298582574826242272, guid: 8512db1400456464db9454c8b41b7055, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6298582574826242272, guid: 8512db1400456464db9454c8b41b7055, type: 3}
       propertyPath: m_LocalPosition.x
       value: 36.992867
@@ -139117,6 +139104,30 @@ PrefabInstance:
     - target: {fileID: 6298582574826242272, guid: 8512db1400456464db9454c8b41b7055, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7261524364667797552, guid: 8512db1400456464db9454c8b41b7055, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 7261524364667797552, guid: 8512db1400456464db9454c8b41b7055, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 8708210063176879573, guid: 8512db1400456464db9454c8b41b7055, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8708210063176879573, guid: 8512db1400456464db9454c8b41b7055, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8708210063176879573, guid: 8512db1400456464db9454c8b41b7055, type: 3}
+      propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8708210063176879573, guid: 8512db1400456464db9454c8b41b7055, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
