@@ -14,6 +14,8 @@ public class AudioManager : MonoBehaviour
     private AudioSource musicSource;
     private List<AudioSource> sfxSources = new();
 
+    private bool musicLocked;
+
     void Awake()
     {
         if (Instance != null)
@@ -38,6 +40,9 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMusic(AudioID id)
     {
+        if (musicLocked)
+            return;
+
         var data = library.Get(id);
         musicSource.clip = data.clip;
         musicSource.volume = data.volume;
@@ -59,6 +64,32 @@ public class AudioManager : MonoBehaviour
             if (!src.isPlaying)
                 return src;
 
-        return sfxSources[0]; // fallback seguro
+        return sfxSources[0];
     }
+
+    public void StopMusic()
+    {
+        if (musicSource.isPlaying)
+            musicSource.Stop();
+    }
+
+    public void ResumeMusic()
+    {
+        if (!musicSource.isPlaying && musicSource.clip != null)
+            musicSource.Play();
+    }
+
+    public void StopMusicAndLock()
+    {
+        musicLocked = true;
+
+        if (musicSource.isPlaying)
+            musicSource.Stop();
+    }
+
+    public void UnlockMusic()
+    {
+        musicLocked = false;
+    }
+
 }

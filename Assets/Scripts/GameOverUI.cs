@@ -3,11 +3,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameOverUI : MonoBehaviour
 {
     [SerializeField] private GameObject gameOverText;
+    [SerializeField] private TMP_Text gameOverTMP;
     [SerializeField] private Volume gameOverVolume;
+    [SerializeField] private AudioManager audioManager;
 
     public static bool IsGameOver { get; private set; }
 
@@ -18,12 +21,6 @@ public class GameOverUI : MonoBehaviour
 
         if (gameOverVolume != null)
             gameOverVolume.weight = 0f;
-
-        Player player = FindObjectOfType<Player>();
-        if (player != null)
-        {
-            HealthSystem health = player.GetComponent<HealthSystem>();
-        }
     }
 
     void Update()
@@ -37,7 +34,24 @@ public class GameOverUI : MonoBehaviour
         }
     }
 
-    private void ShowGameOver()
+    /*    private void Show(string message)
+        {
+            if (IsGameOver) return;
+
+            IsGameOver = true;
+
+            gameOverText.SetActive(true);
+
+            if (gameOverTMP != null)
+                gameOverTMP.text = message;
+
+            if (gameOverVolume != null)
+                gameOverVolume.weight = 1f;
+
+            Time.timeScale = 0f;
+        }*/
+
+    private void Show(string message, bool usePostProcess)
     {
         if (IsGameOver) return;
 
@@ -45,10 +59,27 @@ public class GameOverUI : MonoBehaviour
 
         gameOverText.SetActive(true);
 
+        if (gameOverTMP != null)
+            gameOverTMP.text = message;
+
         if (gameOverVolume != null)
-            gameOverVolume.weight = 1f;
+            gameOverVolume.weight = usePostProcess ? 1f : 0f;
 
         Time.timeScale = 0f;
+    }
+
+
+    public void ShowGameOverFromPlayer()
+    {
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.StopMusicAndLock();
+
+        Show("GAME OVER\nPress any key", true);
+    }
+
+    public void ShowLevelCompleted()
+    {
+        Show("LEVEL COMPLETED\nPress any key", false);
     }
 
     private void QuitGame()
@@ -56,19 +87,4 @@ public class GameOverUI : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
     }
-
-    public void ShowGameOverFromPlayer()
-    {
-        if (IsGameOver) return;
-
-        IsGameOver = true;
-
-        gameOverText.SetActive(true);
-
-        if (gameOverVolume != null)
-            gameOverVolume.weight = 1f;
-
-        Time.timeScale = 0f;
-    }
-
 }
